@@ -35,7 +35,7 @@ fun Greeting(name: String) {
     Text(text = "Hello $name!")
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, widthDp = 412, heightDp = 732)
 @Composable
 fun DefaultPreview() {
     SpotifyTheme {
