@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity() {
         // findElementById("")
         val navView = findViewById<BottomNavigationView>(R.id.nav_view)
         val navHostFragment = supportFragmentManager
-            .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+                .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
         navController.setGraph(R.navigation.nav_graph)
         NavigationUI.setupWithNavController(navView, navController)
@@ -68,35 +68,37 @@ class MainActivity : AppCompatActivity() {
 private fun LoadingSection(text: String) {
     Row(modifier = Modifier.padding(vertical = 8.dp)) {
         Text(
-            text = text,
-            style = MaterialTheme.typography.body2,
-            color = Color.White
+                text = text,
+                style = MaterialTheme.typography.body2,
+                color = Color.White
         )
     }
 }
 
 @Composable
 fun AlbumCover() {
-    Column() {
+    Column {
         Box(modifier = Modifier.size(160.dp)) {
             AsyncImage(
-                model = "https://upload.wikimedia.org/wikipedia/en/d/d1/Stillfantasy.jpg",
-                contentDescription = null,
-                modifier = Modifier.fillMaxSize(),
-                contentScale = ContentScale.FillBounds
+                    model = "https://upload.wikimedia.org/wikipedia/en/d/d1/Stillfantasy.jpg",
+                    contentDescription = null,
+                    modifier = Modifier.fillMaxSize(),
+                    contentScale = ContentScale.FillBounds
             )
 
             Text( // ctrl + J
-                text = "Still Fantasy",
-                color = Color.White,
-                modifier = Modifier.padding(bottom = 4.dp, start = 2.dp).align(Alignment.BottomStart)
+                    text = "Still Fantasy",
+                    color = Color.White,
+                    modifier = Modifier
+                            .padding(bottom = 4.dp, start = 2.dp)
+                            .align(Alignment.BottomStart)
             )
         }
         Text(
-            text = "jay Chu",
-            modifier = Modifier.padding(top = 4.dp),
-            style=MaterialTheme.typography.body2.copy(fontWeight = FontWeight.Bold),
-            color = Color.White)
+                text = "jay Chu",
+                modifier = Modifier.padding(top = 4.dp),
+                style = MaterialTheme.typography.body2.copy(fontWeight = FontWeight.Bold),
+                color = Color.White)
     }
 }
 

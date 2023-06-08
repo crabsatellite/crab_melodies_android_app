@@ -32,86 +32,86 @@ import com.crab.crabmelodies.datamodel.Album
 
 @Composable
 fun HomeScreen(viewModel: HomeViewModel) {
-        val uiState by viewModel.uiState.collectAsState()
+    val uiState by viewModel.uiState.collectAsState()
 
-        HomeScreenContent(uiState = uiState)
+    HomeScreenContent(uiState = uiState)
 }
 
 @Composable
 fun HomeScreenContent(uiState: HomeUiState) {
-        LazyColumn(modifier = Modifier.padding(16.dp)) {
-                item {
-                        HomeScreenHeader()
-                }
-
-                when {
-                        uiState.isLoading -> {
-                                item {
-                                        LoadingSection(stringResource(id = R.string.screen_loading))
-                                }
-
-                        }
-
-                        else -> {
-                                items(uiState.feed) { item ->
-                                        AlbumSection(section = item)
-                                }
-                        }
-                }
+    LazyColumn(modifier = Modifier.padding(16.dp)) {
+        item {
+            HomeScreenHeader()
         }
+
+        when {
+            uiState.isLoading -> {
+                item {
+                    LoadingSection(stringResource(id = R.string.screen_loading))
+                }
+
+            }
+
+            else -> {
+                items(uiState.feed) { item ->
+                    AlbumSection(section = item)
+                }
+            }
+        }
+    }
 }
 
 @Composable
 private fun AlbumSection(section: Section) {
-        Column(modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 8.dp)) {
-                Text(text = section.sectionTitle, style = MaterialTheme.typography.h5.copy(fontWeight = FontWeight.Bold), color = Color.White)
-                LazyRow(modifier = Modifier.padding(top = 8.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        items(section.albums) { item ->
-                                AlbumCover(item)
-                        }
-                }
-
+    Column(modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp)) {
+        Text(text = section.sectionTitle, style = MaterialTheme.typography.h5.copy(fontWeight = FontWeight.Bold), color = Color.White)
+        LazyRow(modifier = Modifier.padding(top = 8.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            items(section.albums) { item ->
+                AlbumCover(item)
+            }
         }
+
+    }
 }
 
 @Composable
 private fun AlbumCover(album: Album) {
-        Column {
-                Box(modifier = Modifier.size(160.dp)) {
-                        AsyncImage(model = album.cover, contentDescription = null, modifier = Modifier.fillMaxSize(), contentScale = ContentScale.FillBounds)
-                        Text(
-                                text = album.name,
-                                color = Color.White,
-                                modifier = Modifier
-                                        .padding(bottom = 4.dp, start = 2.dp)
-                                        .align(Alignment.BottomStart),
-                        )
-                }
-
-                Text(
-                        text = album.artists,
-                        modifier = Modifier.padding(top = 4.dp),
-                        style = MaterialTheme.typography.body2.copy(fontWeight = FontWeight.Bold),
-                        color = Color.LightGray,
-                )
+    Column {
+        Box(modifier = Modifier.size(160.dp)) {
+            AsyncImage(model = album.cover, contentDescription = null, modifier = Modifier.fillMaxSize(), contentScale = ContentScale.FillBounds)
+            Text(
+                    text = album.name,
+                    color = Color.White,
+                    modifier = Modifier
+                            .padding(bottom = 4.dp, start = 2.dp)
+                            .align(Alignment.BottomStart),
+            )
         }
+
+        Text(
+                text = album.artists,
+                modifier = Modifier.padding(top = 4.dp),
+                style = MaterialTheme.typography.body2.copy(fontWeight = FontWeight.Bold),
+                color = Color.LightGray,
+        )
+    }
 }
 
 
 @Composable
 private fun LoadingSection(text: String) {
-        Row(modifier = Modifier.padding(vertical = 8.dp)) {
-                Text(text = text, style = MaterialTheme.typography.body2, color = Color.White)
-        }
+    Row(modifier = Modifier.padding(vertical = 8.dp)) {
+        Text(text = text, style = MaterialTheme.typography.body2, color = Color.White)
+    }
 }
 
 
 @Composable
 fun HomeScreenHeader() {
-        Column {
-                Text(stringResource(id = R.string.menu_home), style = MaterialTheme.typography.h4, color = Color.White)
-                Spacer(modifier = Modifier.height(16.dp))
-        }
+    Column {
+        Text(stringResource(id = R.string.menu_home), style = MaterialTheme.typography.h4, color = Color.White)
+        Spacer(modifier = Modifier.height(16.dp))
+    }
 }

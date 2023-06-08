@@ -16,13 +16,13 @@ class HomeFragment : Fragment() {
     private val viewModel: HomeViewModel by viewModels()
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
+    ): View {
         // Inflate the layout for this fragment
         return ComposeView(requireContext()).apply {
             setContent {
-                MaterialTheme(colors = darkColors()){
+                MaterialTheme(colors = darkColors()) {
                     HomeScreen(viewModel)
                 }
             }

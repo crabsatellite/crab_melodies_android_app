@@ -8,8 +8,8 @@ import androidx.compose.ui.graphics.Color
 
 //customized update
 private val DarkColorPalette = darkColors(
-    background = Color.Black,
-    surface =  Color.Black
+        background = Color.Black,
+        surface = Color.Black
 )
 
 @Composable
@@ -18,9 +18,9 @@ fun SpotifyTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composabl
     val colors = DarkColorPalette
 
     MaterialTheme(
-        colors = colors,
-        typography = Typography,
-        shapes = Shapes,
-        content = content
+            colors = colors,
+            typography = Typography,
+            shapes = Shapes,
+            content = content
     )
 }
