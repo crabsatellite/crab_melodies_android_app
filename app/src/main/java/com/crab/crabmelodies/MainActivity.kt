@@ -24,14 +24,21 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import coil.compose.AsyncImage
 import com.crab.crabmelodies.network.NetworkApi
-import com.crab.crabmelodies.network.NetworkModule
 import com.crab.crabmelodies.ui.theme.SpotifyTheme
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
+@HiltAndroidApp
 class MainActivity : AppCompatActivity() {
+
+    private val TAG = "lifecycle"
+
+    @Inject
+    lateinit var api: NetworkApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -51,7 +58,7 @@ class MainActivity : AppCompatActivity() {
 
         // Test retrofit
         GlobalScope.launch(Dispatchers.IO) {
-            val api = NetworkModule.provideRetrofit().create(NetworkApi::class.java)
+            // val api = NetworkModule.provideRetrofit().create(NetworkApi::class.java)
             val response = api.getHomeFeed().execute().body()
             Log.d("Network", response.toString())
         }
