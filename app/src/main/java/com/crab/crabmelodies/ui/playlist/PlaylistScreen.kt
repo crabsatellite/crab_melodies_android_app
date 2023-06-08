@@ -3,11 +3,17 @@ package com.crab.crabmelodies.ui.playlist
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
@@ -21,10 +27,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.crab.crabmelodies.R
 import com.crab.crabmelodies.datamodel.Album
+import com.crab.crabmelodies.datamodel.Song
 
 @Composable
 fun PlaylistScreen(playlistViewModel: PlaylistViewModel) {
@@ -33,7 +42,9 @@ fun PlaylistScreen(playlistViewModel: PlaylistViewModel) {
     PlaylistScreenContent(
         playlistUiState = playlistUiState
     )
+
 }
+
 
 @Composable
 private fun PlaylistScreenContent(
@@ -46,6 +57,78 @@ private fun PlaylistScreenContent(
         Cover(
             album = playlistUiState.album,
             isFavorite = playlistUiState.isFavorite
+        )
+        PlaylistHeader(album = playlistUiState.album)
+
+        PlaylistContent(playlist = playlistUiState.playlist)
+    }
+}
+
+@Composable
+private fun PlaylistContent(
+    playlist: List<Song>
+) {
+    val state = rememberLazyListState()
+    LazyColumn(state = state) {
+        items(playlist) { song ->
+            Song(song, false )
+        }
+
+        item {
+            Spacer(modifier = Modifier.height(40.dp))
+        }
+    }
+
+}
+
+@Composable
+private fun Song(song: Song, isPlaying: Boolean) {
+    Row(
+        modifier = Modifier
+            .padding(vertical = 8.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Column(modifier = Modifier.weight(1.0f)) {
+            Text(
+                text = song.name,
+                style = MaterialTheme.typography.body2,
+                color = if (isPlaying) {
+                    Color.Green
+                } else {
+                    Color.White
+                },
+            )
+
+            Text(
+                text = song.lyric,
+                style = MaterialTheme.typography.caption,
+                color = Color.Gray,
+            )
+        }
+        Text(
+            text = song.length,
+            modifier = Modifier.padding(start = 8.dp),
+            style = MaterialTheme.typography.body2,
+            color = Color.LightGray,
+        )
+    }
+}
+
+
+@Composable
+private fun PlaylistHeader(album: Album) {
+    Column {
+        Text(
+            text = album.name,
+            style = MaterialTheme.typography.h5.copy(fontWeight = FontWeight.Bold),
+            modifier = Modifier.padding(top = 16.dp),
+            color = Color.White
+        )
+
+        Text(
+            text = stringResource(id = R.string.album_info, album.artists, album.year),
+            style = MaterialTheme.typography.body2,
+            color = Color.LightGray,
         )
     }
 }
