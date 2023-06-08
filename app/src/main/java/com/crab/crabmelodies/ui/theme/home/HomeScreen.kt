@@ -1,6 +1,7 @@
 package com.crab.crabmelodies.ui.theme.home
 
 import Section
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -31,14 +32,14 @@ import com.crab.crabmelodies.R
 import com.crab.crabmelodies.datamodel.Album
 
 @Composable
-fun HomeScreen(viewModel: HomeViewModel) {
+fun HomeScreen(viewModel: HomeViewModel, onTap: (Album) -> Unit) {
     val uiState by viewModel.uiState.collectAsState()
 
-    HomeScreenContent(uiState = uiState)
+    HomeScreenContent(uiState = uiState, onTap = onTap)
 }
 
 @Composable
-fun HomeScreenContent(uiState: HomeUiState) {
+fun HomeScreenContent(uiState: HomeUiState, onTap: (Album) -> Unit) {
     LazyColumn(modifier = Modifier.padding(16.dp)) {
         item {
             HomeScreenHeader()
@@ -51,25 +52,35 @@ fun HomeScreenContent(uiState: HomeUiState) {
                 }
 
             }
-
             else -> {
                 items(uiState.feed) { item ->
-                    AlbumSection(section = item)
+                    AlbumSection(section = item, onTap = onTap)
                 }
             }
         }
+
+
     }
 }
 
 @Composable
-private fun AlbumSection(section: Section) {
-    Column(modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 8.dp)) {
-        Text(text = section.sectionTitle, style = MaterialTheme.typography.h5.copy(fontWeight = FontWeight.Bold), color = Color.White)
-        LazyRow(modifier = Modifier.padding(top = 8.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+private fun AlbumSection(section: Section, onTap: (Album) -> Unit) {
+    Column(
+            modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp)
+    ) {
+        Text(
+                text = section.sectionTitle,
+                style = MaterialTheme.typography.h5.copy(fontWeight = FontWeight.Bold),
+                color = Color.White
+        )
+        LazyRow(
+                modifier = Modifier.padding(top = 8.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
             items(section.albums) { item ->
-                AlbumCover(item)
+                AlbumCover(item, onTap)
             }
         }
 
@@ -77,10 +88,15 @@ private fun AlbumSection(section: Section) {
 }
 
 @Composable
-private fun AlbumCover(album: Album) {
-    Column {
+private fun AlbumCover(album: Album, onTap: (Album) -> Unit) {
+    Column(modifier = Modifier.clickable { onTap(album) }) {
         Box(modifier = Modifier.size(160.dp)) {
-            AsyncImage(model = album.cover, contentDescription = null, modifier = Modifier.fillMaxSize(), contentScale = ContentScale.FillBounds)
+            AsyncImage(
+                    model = album.cover,
+                    contentDescription = null,
+                    modifier = Modifier.fillMaxSize(),
+                    contentScale = ContentScale.FillBounds
+            )
             Text(
                     text = album.name,
                     color = Color.White,
@@ -103,7 +119,11 @@ private fun AlbumCover(album: Album) {
 @Composable
 private fun LoadingSection(text: String) {
     Row(modifier = Modifier.padding(vertical = 8.dp)) {
-        Text(text = text, style = MaterialTheme.typography.body2, color = Color.White)
+        Text(
+                text = text,
+                style = MaterialTheme.typography.body2,
+                color = Color.White
+        )
     }
 }
 
@@ -111,7 +131,11 @@ private fun LoadingSection(text: String) {
 @Composable
 fun HomeScreenHeader() {
     Column {
-        Text(stringResource(id = R.string.menu_home), style = MaterialTheme.typography.h4, color = Color.White)
+        Text(
+                stringResource(id = R.string.menu_home),
+                style = MaterialTheme.typography.h4,
+                color = Color.White
+        )
         Spacer(modifier = Modifier.height(16.dp))
     }
 }
