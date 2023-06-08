@@ -27,6 +27,9 @@ class PlaylistFragment : Fragment() {
         return ComposeView(requireContext()).apply {
             setContent {
                 MaterialTheme(colors = darkColors()) {
+                    PlaylistScreen(
+                        playlistViewModel = viewModel
+                    )
                 }
             }
         }
