@@ -1,10 +1,11 @@
 package com.crab.crabmelodies
 
-// customized extend AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -22,35 +23,55 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import coil.compose.AsyncImage
+import com.crab.crabmelodies.network.NetworkApi
+import com.crab.crabmelodies.network.NetworkModule
 import com.crab.crabmelodies.ui.theme.SpotifyTheme
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        // findElementById("")
         val navView = findViewById<BottomNavigationView>(R.id.nav_view)
-
-        val navHostFragment =supportFragmentManager
+        val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-
         val navController = navHostFragment.navController
         navController.setGraph(R.navigation.nav_graph)
-
         NavigationUI.setupWithNavController(navView, navController)
-        navView.setOnItemSelectedListener{
+        navView.setOnItemSelectedListener {
             NavigationUI.onNavDestinationSelected(it, navController)
             navController.popBackStack(it.itemId, inclusive = false)
             true
         }
 
+        // Test retrofit
+        GlobalScope.launch(Dispatchers.IO) {
+            val api = NetworkModule.provideRetrofit().create(NetworkApi::class.java)
+            val response = api.getHomeFeed().execute().body()
+            Log.d("Network", response.toString())
+        }
     }
 }
 
+@Composable
+private fun LoadingSection(text: String) {
+    Row(modifier = Modifier.padding(vertical = 8.dp)) {
+        Text(
+            text = text,
+            style = MaterialTheme.typography.body2,
+            color = Color.White
+        )
+    }
+}
 
 @Composable
-private fun AlbumCover() {
-    Column {
+fun AlbumCover() {
+    Column() {
         Box(modifier = Modifier.size(160.dp)) {
             AsyncImage(
                 model = "https://upload.wikimedia.org/wikipedia/en/d/d1/Stillfantasy.jpg",
@@ -58,29 +79,31 @@ private fun AlbumCover() {
                 modifier = Modifier.fillMaxSize(),
                 contentScale = ContentScale.FillBounds
             )
-            Text(
+
+            Text( // ctrl + J
                 text = "Still Fantasy",
                 color = Color.White,
-                modifier = Modifier
-                    .padding(bottom = 4.dp, start = 2.dp)
-                    .align(Alignment.BottomStart),
+                modifier = Modifier.padding(bottom = 4.dp, start = 2.dp).align(Alignment.BottomStart)
             )
         }
-
         Text(
-            text = "Jay Chou",
+            text = "jay Chu",
             modifier = Modifier.padding(top = 4.dp),
-            style = MaterialTheme.typography.body2.copy(fontWeight = FontWeight.Bold),
-            color = Color.LightGray,
-        )
+            style=MaterialTheme.typography.body2.copy(fontWeight = FontWeight.Bold),
+            color = Color.White)
     }
 }
-@Preview(showBackground = true, widthDp = 412, heightDp = 732)
+
+
+@Preview(showBackground = true, name = "Preview LoadingSection")
 @Composable
 fun DefaultPreview() {
     SpotifyTheme {
         Surface {
-            AlbumCover() // <- this one
+            AlbumCover()
         }
     }
 }
+
+
+
