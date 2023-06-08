@@ -26,15 +26,14 @@ import coil.compose.AsyncImage
 import com.crab.crabmelodies.network.NetworkApi
 import com.crab.crabmelodies.ui.theme.SpotifyTheme
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import dagger.hilt.android.HiltAndroidApp
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-@HiltAndroidApp
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-
     private val TAG = "lifecycle"
 
     @Inject
