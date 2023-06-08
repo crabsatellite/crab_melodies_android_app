@@ -39,7 +39,7 @@
       android:name="com.crab.crabmelodies.ui.playlist.PlaylistFragment">
         <argument
           android:name="album"
-          app:argType="com.laioffer.spotify.datamodel.Album" />
+          app:argType="com.crab.crabmelodies.datamodel.Album" />
     </fragment>
 </navigation>
 
