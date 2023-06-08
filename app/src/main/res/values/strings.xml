@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Spotify</string>
+    <string name="app_name">Crab Melodies</string>
     <string name="menu_home">Home</string>
     <string name="menu_favorite">Favorite</string>
     <string name="screen_loading">Screen is loading...</string>
