@@ -1,6 +1,8 @@
 package com.crab.crabmelodies.ui.playlist
 
+import android.util.Log
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -40,15 +42,18 @@ fun PlaylistScreen(playlistViewModel: PlaylistViewModel) {
     val playlistUiState by playlistViewModel.uiState.collectAsState()
 
     PlaylistScreenContent(
-        playlistUiState = playlistUiState
+        playlistUiState = playlistUiState,
+        onTapFavorite = {
+            Log.d("PlaylistScreen", "Tap favorite $it")
+        }
     )
 
 }
 
-
 @Composable
 private fun PlaylistScreenContent(
-    playlistUiState: PlaylistUiState
+    playlistUiState: PlaylistUiState,
+    onTapFavorite: (Boolean) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -56,7 +61,8 @@ private fun PlaylistScreenContent(
     ) {
         Cover(
             album = playlistUiState.album,
-            isFavorite = playlistUiState.isFavorite
+            isFavorite = playlistUiState.isFavorite,
+            onTapFavorite = onTapFavorite
         )
         PlaylistHeader(album = playlistUiState.album)
 
@@ -136,7 +142,8 @@ private fun PlaylistHeader(album: Album) {
 @Composable
 private fun Cover(
     album: Album,
-    isFavorite: Boolean
+    isFavorite: Boolean,
+    onTapFavorite: (Boolean) -> Unit
 ) {
     Column(
         modifier = Modifier.fillMaxWidth()
@@ -147,7 +154,8 @@ private fun Cover(
             Icon(
                 modifier = Modifier
                     .size(28.dp)
-                    .align(Alignment.TopEnd),
+                    .align(Alignment.TopEnd).
+                    clickable { onTapFavorite(!isFavorite) },
                 painter = painterResource(
                     id = if (isFavorite) {
                         R.drawable.ic_favorite_24
