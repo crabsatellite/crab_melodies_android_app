@@ -1,4 +1,4 @@
-package com.crab.crabmelodies.ui.theme.home
+package com.crab.crabmelodies.ui.home
 
 import Section
 import android.util.Log

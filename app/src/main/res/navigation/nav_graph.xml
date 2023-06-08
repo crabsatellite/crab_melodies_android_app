@@ -13,7 +13,7 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.crab.crabmelodies.ui.theme.home.HomeFragment"
+        android:name="com.crab.crabmelodies.ui.home.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" />
 </navigation>
