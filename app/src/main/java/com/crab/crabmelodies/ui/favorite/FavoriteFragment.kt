@@ -1,4 +1,4 @@
-package com.crab.crabmelodies.ui
+package com.crab.crabmelodies.ui.favorite
 
 import android.os.Bundle
 import android.view.LayoutInflater
