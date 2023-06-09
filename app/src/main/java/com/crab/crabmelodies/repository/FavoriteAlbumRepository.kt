@@ -10,7 +10,7 @@ import javax.inject.Inject
 
 class FavoriteAlbumRepository @Inject constructor(private val databaseDao: DatabaseDao) {
 
-    fun isFavoriteAlum(id: Int): Flow<Boolean> =
+    fun isFavoriteAlbum(id: Int): Flow<Boolean> =
         databaseDao.isFavoriteAlbum(id).flowOn(Dispatchers.IO)
 
     suspend fun favoriteAlbum(album: Album) = withContext(Dispatchers.IO) {
