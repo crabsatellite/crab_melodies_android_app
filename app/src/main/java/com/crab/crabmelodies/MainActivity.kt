@@ -23,6 +23,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import coil.compose.AsyncImage
+import com.crab.crabmelodies.database.DatabaseDao
+import com.crab.crabmelodies.datamodel.Album
 import com.crab.crabmelodies.network.NetworkApi
 import com.crab.crabmelodies.ui.theme.SpotifyTheme
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -30,14 +32,15 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
-
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-    private val TAG = "lifecycle"
-
     @Inject
     lateinit var api: NetworkApi
+    @Inject
+    lateinit var databaseDao: DatabaseDao
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -45,7 +48,7 @@ class MainActivity : AppCompatActivity() {
         // findElementById("")
         val navView = findViewById<BottomNavigationView>(R.id.nav_view)
         val navHostFragment = supportFragmentManager
-                .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+            .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
         navController.setGraph(R.navigation.nav_graph)
         NavigationUI.setupWithNavController(navView, navController)
@@ -54,13 +57,27 @@ class MainActivity : AppCompatActivity() {
             navController.popBackStack(it.itemId, inclusive = false)
             true
         }
-
         // Test retrofit
         GlobalScope.launch(Dispatchers.IO) {
-            // val api = NetworkModule.provideRetrofit().create(NetworkApi::class.java)
+            //val api = NetworkModule.provideRetrofit().create(NetworkApi::class.java)
             val response = api.getHomeFeed().execute().body()
             Log.d("Network", response.toString())
         }
+
+        GlobalScope.launch {
+            withContext(Dispatchers.IO) {
+                val album = Album(
+                    id = 1,
+                    name =  "Hexagonal",
+                    year = "2008",
+                    cover = "https://upload.wikimedia.org/wikipedia/en/6/6d/Leessang-Hexagonal_%28cover%29.jpg",
+                    artists = "Lesssang",
+                    description = "Leessang (Korean: 리쌍) was a South Korean hip hop duo, composed of Kang Hee-gun (Gary or Garie) and Gil Seong-joon (Gil)"
+                )
+                databaseDao.favoriteAlbum(album)
+            }
+        }
+
     }
 }
 
@@ -68,37 +85,35 @@ class MainActivity : AppCompatActivity() {
 private fun LoadingSection(text: String) {
     Row(modifier = Modifier.padding(vertical = 8.dp)) {
         Text(
-                text = text,
-                style = MaterialTheme.typography.body2,
-                color = Color.White
+            text = text,
+            style = MaterialTheme.typography.body2,
+            color = Color.White
         )
     }
 }
 
 @Composable
 fun AlbumCover() {
-    Column {
+    Column() {
         Box(modifier = Modifier.size(160.dp)) {
             AsyncImage(
-                    model = "https://upload.wikimedia.org/wikipedia/en/d/d1/Stillfantasy.jpg",
-                    contentDescription = null,
-                    modifier = Modifier.fillMaxSize(),
-                    contentScale = ContentScale.FillBounds
+                model = "https://upload.wikimedia.org/wikipedia/en/d/d1/Stillfantasy.jpg",
+                contentDescription = null,
+                modifier = Modifier.fillMaxSize(),
+                contentScale = ContentScale.FillBounds
             )
 
             Text( // ctrl + J
-                    text = "Still Fantasy",
-                    color = Color.White,
-                    modifier = Modifier
-                            .padding(bottom = 4.dp, start = 2.dp)
-                            .align(Alignment.BottomStart)
+                text = "Still Fantasy",
+                color = Color.White,
+                modifier = Modifier.padding(bottom = 4.dp, start = 2.dp).align(Alignment.BottomStart)
             )
         }
         Text(
-                text = "jay Chu",
-                modifier = Modifier.padding(top = 4.dp),
-                style = MaterialTheme.typography.body2.copy(fontWeight = FontWeight.Bold),
-                color = Color.White)
+            text = "jay Chu",
+            modifier = Modifier.padding(top = 4.dp),
+            style=MaterialTheme.typography.body2.copy(fontWeight = FontWeight.Bold),
+            color = Color.White)
     }
 }
 
@@ -112,6 +127,4 @@ fun DefaultPreview() {
         }
     }
 }
-
-
 
