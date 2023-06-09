@@ -14,7 +14,7 @@ You can find the demo video [here](https://crabsatellite.com/projects/web_projec
 
 4. **Jetpack Compose and MVVM Architecture**: The feed, album, and favorite user interfaces are built in Jetpack Compose following the Model-View-ViewModel (MVVM) architecture. This allows for clear separation of concerns and enhances the maintainability and testability of the application.
 
-5. **Room Database**: The application features local cache ability for favorite features, implemented using the Room Database. This allows users to save their favorite songs and access them offline.
+5. **Room Database**: The application features local cache ability for favorite features, implemented using the Room Database. 
 
 6. **Google Exoplayer**: The Google Exoplayer is integrated into the application to handle global music playback. This ensures that users can enjoy a smooth and high-quality music playback experience.
 
