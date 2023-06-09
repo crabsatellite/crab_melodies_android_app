@@ -18,11 +18,10 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-
 @HiltViewModel
 class PlayerViewModel @Inject constructor(
     private val exoPlayer: ExoPlayer
-) : ViewModel(), Player.Listener {
+) : ViewModel(), Player.Listener  {
     private val _uiState = MutableStateFlow(PlayerUiState())
     val uiState: StateFlow<PlayerUiState> = _uiState.asStateFlow()
 
@@ -76,6 +75,12 @@ class PlayerViewModel @Inject constructor(
         Log.d("spotify", error.toString())
     }
 
+    fun seekTo(positionMs: Long) {
+        _uiState.value = uiState.value.copy(
+            currentMs = positionMs
+        )
+        exoPlayer.seekTo(positionMs)
+    }
 }
 
 data class PlayerUiState(
